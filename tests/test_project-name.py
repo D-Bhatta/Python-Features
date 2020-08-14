@@ -14,4 +14,4 @@ def test_helloworld(capsys):
 # This is supposed to fail
 def test_helloworld_exception():
     with pytest.raises(TypeError):
-        scripts.helloworld("1")
+        scripts.helloworld(1)
