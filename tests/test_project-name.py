@@ -1,7 +1,7 @@
 """ Tests for 'scripts' package """
 import pytest
 
-from ..scripts import scripts
+from scripts import scripts
 
 
 def test_helloworld(capsys):
