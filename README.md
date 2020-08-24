@@ -8,15 +8,11 @@ Notes and code about python features
 
 ## Sections
 
-.
-
-## Notes
-
-1. .
+1. Python Zip function—Real Python
 
 ## Project Status
 
-.
+Currently under development.
 
 ## Additional Information
 
