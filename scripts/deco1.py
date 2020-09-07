@@ -100,6 +100,11 @@ def average_speed(distance, duration):
     return distance / duration
 
 
+@swap_func_args({"dog": "cat"})
+def hello_kitty(cat="meow"):
+    print(f"Cat says {cat}")
+
+
 waste_some_time(999)
 approximate_e(5)
 countdown(3)
@@ -129,3 +134,4 @@ bolt = average_speed(100, 9.58)
 print(bolt)
 print(bolt.to("km per hour"))
 print(bolt.to("mph").m)
+hello_kitty(dog="meow")

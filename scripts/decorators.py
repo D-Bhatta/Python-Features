@@ -1,5 +1,6 @@
 import time
 from functools import update_wrapper, wraps
+from logging import warnings
 
 import pint
 from flask import abort, g, redirect, request, url_for
@@ -195,3 +196,61 @@ def name(_func=None, *, kw1=val1, kw2=val2, ...):  # 1
     else:
         return decorator_name(_func)               # 3
 """
+
+
+def swap_func_args(swapped_args, end_version="future", lib_name="name"):
+    """
+    Swaps keyword args for new ones.
+
+    Args:
+        swapped_args (dict): Dict of {old:new} args
+
+        end_version (string): string of when the old args will no longer be
+            supported.
+
+        lib_name (string): string of library name
+
+    Returns:
+        Warns about deprecated args and swaps them for new ones.
+    """
+
+    def _swap_func_args(func):
+        wraps(func)
+
+        def wrapper(*args, **kwargs):
+            _warn_deprecated_params(
+                swapped_args, end_version, lib_name, kwargs
+            )
+            kwargs = _swap_args(swapped_args, kwargs)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return _swap_func_args
+
+
+def _warn_deprecated_params(swapped_args, end_version, lib_name, kwargs):
+    used_args = set(kwargs).intersection(swapped_args)
+    for deprecated_arg in used_args:
+        swapped_arg = swapped_args[deprecated_arg]
+        depracation_message = f'The argument "{deprecated_arg}" will be removed in {end_version} release of {lib_name}. \nPlease use the argument "{swapped_arg}" instead.'
+        warnings.filterwarnings("always", message=depracation_message)
+        warnings.warn(category=DeprecationWarning, message=depracation_message)
+
+
+def _swap_args(swapped_args, kwargs):
+    """
+    Swap args for decorator swap_func_args
+
+    Args:
+        swapped_args (dict): Dict of {old:new} args
+
+    Returns:
+        kwargs (dict): Swaps deprecated args them for new ones.
+    """
+    for old_arg, new_arg in swapped_args.items():
+        old_arg_val = kwargs.setdefault(old_arg, None)
+        if old_arg_val is not None:
+            kwargs[new_arg] = old_arg_val
+        kwargs.pop(old_arg)
+    return kwargs
