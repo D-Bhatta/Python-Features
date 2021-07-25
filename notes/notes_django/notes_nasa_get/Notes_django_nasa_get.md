@@ -50,10 +50,11 @@ Notes and code about Nasa Get
 ## Notes
 
 Notes about the app development.
+<!-- markdownlint-disable-file MD024 -->
 
 ## Create the app
 
-Create the app with `django-admin startproject nasa_get`
+Create the project with `django-admin startproject nasa_get`.
 
 ## Remove secret key in settings.py
 
